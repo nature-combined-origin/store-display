@@ -106,7 +106,7 @@ npm run hash-password -- 새비밀번호
 ## Vercel 환경변수
 
 Vercel Project Settings → Environment Variables → **Production** 체크 후 등록하세요.  
-**`.env.local`을 그대로 복사하지 마세요.** Vercel용은 `.env.vercel.example`을 참고하세요.
+**`.env.local`을 그대로 복사하지 마세요.** Vercel Dashboard에는 `ADMIN_PASSWORD_HASH`를 `$2b$10$...` 형태(백슬래시 없음)로 넣으세요.
 
 | Key | 로컬 `.env.local` | Vercel Dashboard |
 |-----|-------------------|------------------|
