@@ -139,35 +139,38 @@ export default function DisplayCampaign() {
   }
 
   const displayClass = DISPLAY_TYPE_CLASS[campaign.display_type] ?? DISPLAY_TYPE_CLASS.static;
+  const hasImage = Boolean(currentPage.image_url);
+  const hasText = Boolean(currentPage.text?.trim());
 
   return (
-    <main className="relative flex min-h-screen flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white">
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-10">
-        <h1 className="mb-8 text-center text-3xl font-bold tracking-tight sm:text-5xl">
-          {campaign.title}
-        </h1>
-
-        <div className="flex w-full max-w-6xl flex-col items-center gap-8">
-          {currentPage.image_url ? (
-            <div className="relative aspect-video w-full max-h-[55vh] overflow-hidden rounded-3xl border border-white/10 bg-black/20 shadow-2xl">
-              <Image
-                src={currentPage.image_url}
-                alt={currentPage.text ?? campaign.title}
-                fill
-                unoptimized
-                className="object-contain"
-                sizes="(max-width: 1200px) 100vw, 1200px"
-              />
-            </div>
-          ) : null}
-
-          {currentPage.text ? (
-            <div className={`w-full max-w-5xl text-center text-2xl sm:text-4xl ${displayClass}`}>
-              <span>{currentPage.text}</span>
-            </div>
-          ) : null}
+    <main className="flex h-screen flex-col overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white">
+      {hasImage ? (
+        <div className="relative min-h-0 w-full flex-1">
+          <Image
+            src={currentPage.image_url!}
+            alt={currentPage.text?.trim() || "display image"}
+            fill
+            unoptimized
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
+          />
         </div>
-      </div>
+      ) : null}
+
+      {hasText ? (
+        <div
+          className={`shrink-0 px-6 py-8 ${
+            hasImage ? "bg-black/30" : "flex flex-1 items-center justify-center"
+          }`}
+        >
+          <div
+            className={`mx-auto w-full max-w-6xl text-center text-2xl sm:text-4xl lg:text-5xl ${displayClass}`}
+          >
+            <span>{currentPage.text}</span>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
