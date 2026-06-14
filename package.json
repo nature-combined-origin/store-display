@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "hash-password": "tsx scripts/hash-password.ts"
+    "hash-password": "tsx scripts/hash-password.ts",
+    "generate-admin-secrets": "tsx scripts/generate-admin-secrets.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.1",
