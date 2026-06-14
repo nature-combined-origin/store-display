@@ -174,7 +174,7 @@ lib/              # supabase, admin session, campaigns helpers
 types/            # campaign types
 supabase/         # schema.sql, setup README
 scripts/          # hash-password
-middleware.ts     # /admin protection
+proxy.ts          # /admin protection
 ```
 
 ## 테스트 순서
