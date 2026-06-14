@@ -87,7 +87,12 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 npm run hash-password -- 새비밀번호
 ```
 
-2. 출력된 hash를 `.env.local`의 `ADMIN_PASSWORD_HASH`에 반영
+2. 출력된 hash를 `.env.local`의 `ADMIN_PASSWORD_HASH`에 반영  
+   bcrypt hash의 `$`는 Next.js env에서 깨지므로 **각 `$`를 `\$`로 이스케이프**하세요.
+
+   ```env
+   ADMIN_PASSWORD_HASH=\$2b\$10\$...
+   ```
 3. dev server 재시작
 
 ## Vercel 배포 방법

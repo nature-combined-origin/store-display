@@ -17,11 +17,8 @@ export default function DisplayCampaign() {
   const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [pages, setPages] = useState<CampaignPage[]>([]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [remainingMs, setRemainingMs] = useState(DEFAULT_DURATION_SECONDS * 1000);
   const [loading, setLoading] = useState(true);
   const timerRef = useRef<number | null>(null);
-  const progressRef = useRef<number | null>(null);
-  const startedAtRef = useRef<number>(0);
 
   const loadActiveCampaign = useCallback(async () => {
     try {
@@ -105,22 +102,12 @@ export default function DisplayCampaign() {
       window.clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-    if (progressRef.current) {
-      window.clearInterval(progressRef.current);
-      progressRef.current = null;
-    }
 
     if (!currentPage || pages.length === 0) {
       return;
     }
 
     const durationMs = normalizeDuration(currentPage.duration_seconds) * 1000;
-    startedAtRef.current = Date.now();
-
-    progressRef.current = window.setInterval(() => {
-      const elapsed = Date.now() - startedAtRef.current;
-      setRemainingMs(Math.max(durationMs - elapsed, 0));
-    }, 200);
 
     timerRef.current = window.setTimeout(() => {
       setCurrentPageIndex((index) => (index + 1) % pages.length);
@@ -129,9 +116,6 @@ export default function DisplayCampaign() {
     return () => {
       if (timerRef.current) {
         window.clearTimeout(timerRef.current);
-      }
-      if (progressRef.current) {
-        window.clearInterval(progressRef.current);
       }
     };
   }, [currentPage, pages, currentPageIndex]);
@@ -154,8 +138,6 @@ export default function DisplayCampaign() {
     );
   }
 
-  const durationMs = normalizeDuration(currentPage.duration_seconds) * 1000;
-  const progress = durationMs > 0 ? ((durationMs - remainingMs) / durationMs) * 100 : 0;
   const displayClass = DISPLAY_TYPE_CLASS[campaign.display_type] ?? DISPLAY_TYPE_CLASS.static;
 
   return (
@@ -184,21 +166,6 @@ export default function DisplayCampaign() {
               <span>{currentPage.text}</span>
             </div>
           ) : null}
-        </div>
-      </div>
-
-      <div className="border-t border-white/10 bg-black/30 px-6 py-4 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 text-sm text-slate-300">
-          <span>
-            {currentPageIndex + 1} / {pages.length}
-          </span>
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full bg-indigo-400 transition-[width] duration-200"
-              style={{ width: `${Math.min(progress, 100)}%` }}
-            />
-          </div>
-          <span>{Math.ceil(remainingMs / 1000)}초</span>
         </div>
       </div>
     </main>
