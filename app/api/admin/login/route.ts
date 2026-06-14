@@ -1,11 +1,12 @@
 import bcrypt from "bcryptjs";
+import { getAdminPasswordHash } from "@/lib/env";
 import { createAdminSession } from "@/lib/admin-session";
 
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { password?: string };
     const password = body.password ?? "";
-    const hash = process.env.ADMIN_PASSWORD_HASH;
+    const hash = getAdminPasswordHash();
 
     if (!hash) {
       return Response.json({ error: "ADMIN_PASSWORD_HASH is not configured." }, { status: 500 });

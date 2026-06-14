@@ -105,7 +105,14 @@ npm run hash-password -- 새비밀번호
 
 ## Vercel 환경변수
 
-Vercel Project Settings → Environment Variables에 아래를 등록하세요.
+Vercel Project Settings → Environment Variables → **Production** 체크 후 등록하세요.  
+**`.env.local`을 그대로 복사하지 마세요.** Vercel용은 `.env.vercel.example`을 참고하세요.
+
+| Key | 로컬 `.env.local` | Vercel Dashboard |
+|-----|-------------------|------------------|
+| `ADMIN_PASSWORD_HASH` | `\$2b\$10\$...` (백슬래시 필요) | `$2b$10$...` (백슬래시 **없음**) |
+
+필수 변수:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -114,7 +121,7 @@ Vercel Project Settings → Environment Variables에 아래를 등록하세요.
 - `ADMIN_SESSION_SECRET`
 - `NEXT_PUBLIC_APP_URL` (예: `https://your-app.vercel.app`)
 
-Production에서는 `ADMIN_SESSION_SECRET`을 새 랜덤 문자열로 교체하세요.
+저장 후 **Redeploy** 필수. env 변수 옆 **Disabled** 토글이 켜져 있으면 비활성입니다.
 
 ## 사용 방법
 
